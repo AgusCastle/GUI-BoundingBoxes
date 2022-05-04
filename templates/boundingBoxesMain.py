@@ -11,10 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class MainView(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(823, 526)
+        MainWindow.resize(900, 550)
+        MainWindow.setMinimumSize(QtCore.QSize(900, 550))
+        MainWindow.setMaximumSize(QtCore.QSize(900, 550))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -49,7 +51,7 @@ class Ui_MainWindow(object):
         self.lbl_rutab.setObjectName("lbl_rutab")
         self.verticalLayout_3.addWidget(self.lbl_rutab)
         self.verticalLayout_4.addWidget(self.frame_3)
-        self.listView = QtWidgets.QListView(self.frame)
+        self.listView = QtWidgets.QListWidget(self.frame)
         self.listView.setMaximumSize(QtCore.QSize(16777215, 250))
         self.listView.setObjectName("listView")
         self.verticalLayout_4.addWidget(self.listView)
@@ -94,7 +96,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = MainView()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
