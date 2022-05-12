@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Form(object):
-    def setupUi(self, Form, pix):
+    def setupUi(self, Form, pix, rad):
         Form.setObjectName("Form")
         Form.resize(550, 457)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
@@ -21,6 +21,36 @@ class Ui_Form(object):
         self.lbl_imagen.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_imagen.setObjectName("lbl_imagen")
         self.verticalLayout.addWidget(self.lbl_imagen)
+        self.frame = QtWidgets.QFrame(Form)
+        self.frame.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.radio_bttn_a = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_a.setObjectName("radio_bttn_a")
+        self.horizontalLayout.addWidget(self.radio_bttn_a)
+        self.radio_bttn_b = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_b.setObjectName("radio_bttn_b")
+        self.horizontalLayout.addWidget(self.radio_bttn_b)
+        self.radio_bttn_c = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_c.setObjectName("radio_bttn_c")
+        self.horizontalLayout.addWidget(self.radio_bttn_c)
+        self.radio_bttn_d = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_d.setObjectName("radio_bttn_d")
+        self.horizontalLayout.addWidget(self.radio_bttn_d)
+        self.radio_bttn_e = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_e.setObjectName("radio_bttn_e")
+        self.horizontalLayout.addWidget(self.radio_bttn_e)
+        self.verticalLayout.addWidget(self.frame)
+
+        self.array_radios = [self.radio_bttn_a,self.radio_bttn_b, 
+                            self.radio_bttn_c, self.radio_bttn_d, 
+                            self.radio_bttn_e ]
+        if rad > 0 :
+            self.array_radios[rad - 1].setChecked(True)
+
         self.retranslateUi(Form)
         self.lbl_imagen.setPixmap(pix)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -29,6 +59,11 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lbl_imagen.setText(_translate("Form", "Imagen Recortada"))
+        self.radio_bttn_a.setText(_translate("Form", "Surgical"))
+        self.radio_bttn_b.setText(_translate("Form", "KN-95"))
+        self.radio_bttn_c.setText(_translate("Form", "RadioButton"))
+        self.radio_bttn_d.setText(_translate("Form", "RadioButton"))
+        self.radio_bttn_e.setText(_translate("Form", "RadioButton"))
 
 if __name__ == "__main__":
     import sys
