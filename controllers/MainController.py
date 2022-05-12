@@ -33,6 +33,7 @@ class MainViewController(QtWidgets.QMainWindow):
         imagen = QImage(imagen_cv.data.tobytes(), w, h, w * 3, QImage.Format_RGB888).rgbSwapped()
         pix = QPixmap.fromImage(imagen).scaled(450, 450, QtCore.Qt.KeepAspectRatio)
         rad = 0
+        
         if self.imgdata['labels'][index] == 'surgical':
             rad = 1
 
