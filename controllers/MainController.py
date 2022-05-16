@@ -1,7 +1,8 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from utils.opencv import *
-from utils.xml import xml_annotation
+from utils.xml import xml_annotation, xml_get_name
+from utils.files import returnAllfilesbyType
 import numpy as np
 import sys
 
@@ -19,11 +20,26 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ruta_imagen = ''
         self.ruta_xml = ''
 
-        self.ui.lbl_rutab.clicked.connect(lambda:self.setBoxes())
-        self.ui.bttn_selectimg.clicked.connect(lambda: self.abrirFotografia())
-        self.ui.bttn_boxes.clicked.connect(lambda: self.agregarBoxesImagenListView())
+        self.ui.bttn_selectimg.clicked.connect(lambda: self.abrirDirectorioxml())
+        self.ui.bttn_boxes.clicked.connect(lambda: self.abrirDirectorioImg())
+
+        self.ui.bttn_next.clicked.connect(lambda: self.changeImagen('>'))
+        self.ui.bttn_prev.clicked.connect(lambda: self.changeImagen('<'))
+        
         self.ui.listView.doubleClicked.connect(self.onCliked)
         self.show()
+
+    def changeImagen(self, op):
+
+        if op == '>':
+            self.index += 1
+        if op == '<':
+            self.index -= 1
+
+        self.ruta_imagen = self.folderimg + '/' + xml_get_name(self.list_xml_paths[self.index])
+        self.ruta_xml = self.list_xml_paths[self.index]
+
+        self.setBoxes()
 
     def onCliked(self, item):
         index = self.ui.listView.currentRow()
@@ -49,6 +65,21 @@ class MainViewController(QtWidgets.QMainWindow):
 
         self.uiBox = BoxWidget( rad, self.ruta_xml, index, pix, self.setBoxes)
 
+    def abrirDirectorioxml(self):
+        self.folderxml = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Selecciona ubicacion de los xml"))
+        self.list_xml_paths = returnAllfilesbyType(path= self.folderxml, tfile='xml')
+
+    def abrirDirectorioImg(self):
+        self.folderimg = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Selecciona ubicacion de las imagenes"))
+
+        self.index = 0
+        
+        self.ruta_imagen = self.folderimg + '/' + xml_get_name(self.list_xml_paths[self.index])
+        self.ruta_xml = self.list_xml_paths[self.index]
+
+        self.setBoxes()
+
+
     def abrirFotografia(self):
         filename =  QtWidgets.QFileDialog.getOpenFileName(None, 'Buscar Imagen', '.', 'Image Files (*.png *.jpg *.jpeg *.bmp)')
         
@@ -62,7 +93,7 @@ class MainViewController(QtWidgets.QMainWindow):
     def agregarBoxesImagenListView(self):
 
         filename =  QtWidgets.QFileDialog.getOpenFileName(None, 'Buscar xml', '.', 'Image Files (*.xml)')
-        
+
         if filename[0]:
             self.ruta_xml = filename[0]
         else:

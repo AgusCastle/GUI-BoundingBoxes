@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 
+from sklearn import tree
+
 def xml_annotation(xml_path):
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -26,4 +28,8 @@ def xml_update(xml_path, index, new_class):
     
     tree.write(xml_path)
 
-#xml_update('/Users/agustincastillo/Downloads/xmlGUI/annotations/EqkccHpXUAAvYjM.xml', 1, 'kn-95')
+def xml_get_name(xml_path):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    return root.find('filename').text
