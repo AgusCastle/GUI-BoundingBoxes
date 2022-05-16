@@ -9,10 +9,11 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot, QObject
 
 
 class Ui_Form(object):
-    def setupUi(self, Form, pix, rad):
+    def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(550, 457)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
@@ -43,27 +44,25 @@ class Ui_Form(object):
         self.radio_bttn_e = QtWidgets.QRadioButton(self.frame)
         self.radio_bttn_e.setObjectName("radio_bttn_e")
         self.horizontalLayout.addWidget(self.radio_bttn_e)
+        self.radio_bttn_f = QtWidgets.QRadioButton(self.frame)
+        self.radio_bttn_f.setObjectName("radio_bttn_f")
+        self.horizontalLayout.addWidget(self.radio_bttn_f)
         self.verticalLayout.addWidget(self.frame)
 
-        self.array_radios = [self.radio_bttn_a,self.radio_bttn_b, 
-                            self.radio_bttn_c, self.radio_bttn_d, 
-                            self.radio_bttn_e ]
-        if rad > 0 :
-            self.array_radios[rad - 1].setChecked(True)
-
         self.retranslateUi(Form)
-        self.lbl_imagen.setPixmap(pix)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lbl_imagen.setText(_translate("Form", "Imagen Recortada"))
-        self.radio_bttn_a.setText(_translate("Form", "Surgical"))
-        self.radio_bttn_b.setText(_translate("Form", "KN-95"))
-        self.radio_bttn_c.setText(_translate("Form", "RadioButton"))
-        self.radio_bttn_d.setText(_translate("Form", "RadioButton"))
-        self.radio_bttn_e.setText(_translate("Form", "RadioButton"))
+        self.radio_bttn_a.setText(_translate("Form", "surgical"))
+        self.radio_bttn_b.setText(_translate("Form", "valve"))
+        self.radio_bttn_c.setText(_translate("Form", "cloth"))
+        self.radio_bttn_d.setText(_translate("Form", "respirator"))
+        self.radio_bttn_e.setText(_translate("Form", "others"))
+        self.radio_bttn_f.setText(_translate("Form", "none"))
+
 
 if __name__ == "__main__":
     import sys

@@ -15,3 +15,15 @@ def xml_annotation(xml_path):
         boxes.append([xmin, ymin, xmax, ymax])
         labels.append(label)
     return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels}
+
+def xml_update(xml_path, index, new_class):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    for i, object in enumerate(root.iter('object')):
+        if i == index:
+            object.find('name').text = new_class
+    
+    tree.write(xml_path)
+
+#xml_update('/Users/agustincastillo/Downloads/xmlGUI/annotations/EqkccHpXUAAvYjM.xml', 1, 'kn-95')

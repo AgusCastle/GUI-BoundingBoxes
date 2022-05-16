@@ -14,9 +14,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class MainView(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(900, 550)
-        MainWindow.setMinimumSize(QtCore.QSize(900, 550))
-        MainWindow.setMaximumSize(QtCore.QSize(900, 550))
+        MainWindow.resize(1366, 768)
+        MainWindow.setMinimumSize(QtCore.QSize(1366, 768))
+        MainWindow.setMaximumSize(QtCore.QSize(1366, 768))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -46,8 +46,8 @@ class MainView(object):
         self.bttn_boxes = QtWidgets.QPushButton(self.frame_3)
         self.bttn_boxes.setObjectName("bttn_boxes")
         self.verticalLayout_3.addWidget(self.bttn_boxes)
-        self.lbl_rutab = QtWidgets.QLabel(self.frame_3)
-        self.lbl_rutab.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_rutab = QtWidgets.QPushButton(self.frame_3)
+        #self.lbl_rutab.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_rutab.setObjectName("lbl_rutab")
         self.verticalLayout_3.addWidget(self.lbl_rutab)
         self.verticalLayout_4.addWidget(self.frame_3)
@@ -87,7 +87,7 @@ class MainView(object):
         self.bttn_selectimg.setText(_translate("MainWindow", "Buscar imagen"))
         self.lbl_rutai.setText(_translate("MainWindow", "Ruta"))
         self.bttn_boxes.setText(_translate("MainWindow", "Buscar Boxes"))
-        self.lbl_rutab.setText(_translate("MainWindow", "Ruta"))
+        self.lbl_rutab.setText(_translate("MainWindow", "Actualizar"))
         self.lbl_titulo.setText(_translate("MainWindow", "Nombre de la imagen"))
         self.lbl_imagen.setText(_translate("MainWindow", "Imagen"))
 
