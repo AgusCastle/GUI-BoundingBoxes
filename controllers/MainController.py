@@ -3,9 +3,6 @@ from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from utils.opencv import *
 from utils.xml import xml_annotation, xml_get_name
 from utils.files import returnAllfilesbyType
-import numpy as np
-import sys
-
 
 from templates.boundingBoxesMain import MainView
 from controllers.BoxController import BoxWidget
@@ -27,7 +24,25 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_prev.clicked.connect(lambda: self.changeImagen('<'))
         
         self.ui.listView.doubleClicked.connect(self.onCliked)
+
+
+        self.ui.bttn_boxes.setEnabled(False)
+        self.ui.bttn_prev.setEnabled(False)
+        self.ui.bttn_next.setEnabled(False)
+
         self.show()
+
+    def controllersBttns(self, i):
+        if i == (len(self.list_xml_paths) - 1):
+            self.ui.bttn_next.setEnabled(False)
+        else:
+            self.ui.bttn_next.setEnabled(True)
+
+        if i == 0:
+            self.ui.bttn_prev.setEnabled(False)
+        else:
+            self.ui.bttn_prev.setEnabled(True)
+
 
     def changeImagen(self, op):
 
@@ -36,7 +51,10 @@ class MainViewController(QtWidgets.QMainWindow):
         if op == '<':
             self.index -= 1
 
-        self.ruta_imagen = self.folderimg + '/' + xml_get_name(self.list_xml_paths[self.index])
+        self.controllersBttns(self.index)
+        name = xml_get_name(self.list_xml_paths[self.index])
+        self.ruta_imagen = self.folderimg + '/' + name
+        self.ui.lbl_titulo.setText(name)
         self.ruta_xml = self.list_xml_paths[self.index]
 
         self.setBoxes()
@@ -67,17 +85,27 @@ class MainViewController(QtWidgets.QMainWindow):
 
     def abrirDirectorioxml(self):
         self.folderxml = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Selecciona ubicacion de los xml"))
-        self.list_xml_paths = returnAllfilesbyType(path= self.folderxml, tfile='xml')
+        if self.folderxml:
+            self.list_xml_paths = returnAllfilesbyType(path= self.folderxml, tfile='xml')
+            if len(self.list_xml_paths ) > 0:
+                self.ui.lbl_rutai.setText('Encontrados: {}'.format(len(self.list_xml_paths)))
+                self.ui.bttn_boxes.setEnabled(True)
+            else:
+                self.ui.lbl_rutai.setText('No hay XML')
 
     def abrirDirectorioImg(self):
         self.folderimg = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Selecciona ubicacion de las imagenes"))
 
-        self.index = 0
-        
-        self.ruta_imagen = self.folderimg + '/' + xml_get_name(self.list_xml_paths[self.index])
-        self.ruta_xml = self.list_xml_paths[self.index]
+        if self.folderimg:
+            self.index = 0
 
-        self.setBoxes()
+            name = xml_get_name(self.list_xml_paths[self.index])
+            self.ruta_imagen = self.folderimg + '/' + name
+            self.ui.lbl_titulo.setText(name)
+            self.ruta_xml = self.list_xml_paths[self.index]
+            
+            self.ui.bttn_next.setEnabled(True)
+            self.setBoxes()
 
 
     def abrirFotografia(self):
@@ -85,9 +113,13 @@ class MainViewController(QtWidgets.QMainWindow):
         
         if filename[0]:
             self.ruta_imagen = filename[0]
-            imagen = QImage(self.ruta_imagen)
-            pix = QPixmap.fromImage(imagen).scaled(1280, 720, QtCore.Qt.KeepAspectRatio)
-            self.ui.lbl_titulo.setText(filename[0])
+            #imagen = QImage(self.ruta_imagen)
+            #pix = QPixmap.fromImage(imagen).scaled(1280, 720, QtCore.Qt.KeepAspectRatio)
+            #self.ui.lbl_titulo.setText(filename[0])
+            #self.ui.lbl_imagen.setPixmap(pix)
+            imagen_cv = test(self.ruta_imagen)
+            imagen = QImage(imagen_cv.data, imagen_cv.shape[1], imagen_cv.shape[0], QImage.Format_RGB888).rgbSwapped()
+            pix = QPixmap.fromImage(imagen).scaled(1000, 1000, QtCore.Qt.KeepAspectRatio)
             self.ui.lbl_imagen.setPixmap(pix)
     
     def agregarBoxesImagenListView(self):
@@ -119,5 +151,5 @@ class MainViewController(QtWidgets.QMainWindow):
             count += 1
         
         imagen = QImage(imagen_cv.data, imagen_cv.shape[1], imagen_cv.shape[0], QImage.Format_RGB888).rgbSwapped()
-        pix = QPixmap.fromImage(imagen).scaled(1280, 720, QtCore.Qt.KeepAspectRatio)
+        pix = QPixmap.fromImage(imagen).scaled(1000, 1000, QtCore.Qt.KeepAspectRatio)
         self.ui.lbl_imagen.setPixmap(pix)

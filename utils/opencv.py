@@ -14,8 +14,8 @@ def setBoxesToImage(path, lis={}):
     for box, label in zip(lis['boxes'], lis['labels']):
         color = boundingBoxColor(label)
         colors.append(color)
-        image = cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
-        image = cv2.putText(image, label + " " + str(count + 1), (box[0], box[3] + 18), font, size_font, color, grosor)
+        cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
+        cv2.putText(image, label + " " + str(count + 1), (box[0], box[3] + 18), font, size_font, color, grosor)
         count += 1
     return image, colors
 
@@ -39,3 +39,32 @@ def boundingBoxColor(label):
     elif label == 'none':
         return (0, 0, 255)
     return (0, 0, 0)
+
+def test(path):
+    img_raw = cv2.imread(path)
+    b = [493, 273, 609, 279, 561, 349, 506, 398, 582, 403]
+    cv2.circle(img_raw, (b[0], b[1]), 1, (0, 0, 255), 4)
+    cv2.circle(img_raw, (b[2], b[3]), 1, (0, 255, 255), 4)
+    cv2.circle(img_raw, (b[4], b[5]), 1, (255, 0, 255), 4)
+    cv2.circle(img_raw, (b[6], b[7]), 1, (0, 255, 0), 4)
+    cv2.circle(img_raw, (b[8], b[9]), 1, (255, 0, 0), 4)
+    b2 = [210, 233, 289, 224, 268, 274, 237, 318, 294, 310]
+    cv2.circle(img_raw, (b2[0], b2[1]), 1, (0, 0, 255), 4)
+    cv2.circle(img_raw, (b2[2], b2[3]), 1, (0, 255, 255), 4)
+    cv2.circle(img_raw, (b2[4], b2[5]), 1, (255, 0, 255), 4)
+    cv2.circle(img_raw, (b2[6], b2[7]), 1, (0, 255, 0), 4)
+    cv2.circle(img_raw, (b2[8], b2[9]), 1, (255, 0, 0), 4)
+    b2 =[907,312, 977, 338, 919, 353, 895, 382, 937, 402]
+    cv2.circle(img_raw, (b2[0], b2[1]), 1, (0, 0, 255), 4)
+    cv2.circle(img_raw, (b2[2], b2[3]), 1, (0, 255, 255), 4)
+    cv2.circle(img_raw, (b2[4], b2[5]), 1, (255, 0, 255), 4)
+    cv2.circle(img_raw, (b2[6], b2[7]), 1, (0, 255, 0), 4)
+    cv2.circle(img_raw, (b2[8], b2[9]), 1, (255, 0, 0), 4)
+    b2 =[753, 201, 753, 199, 763, 226, 757, 262, 760, 261]
+    cv2.circle(img_raw, (b2[0], b2[1]), 1, (0, 0, 255), 4)
+    cv2.circle(img_raw, (b2[2], b2[3]), 1, (0, 255, 255), 4)
+    cv2.circle(img_raw, (b2[4], b2[5]), 1, (255, 0, 255), 4)
+    cv2.circle(img_raw, (b2[6], b2[7]), 1, (0, 255, 0), 4)
+    cv2.circle(img_raw, (b2[8], b2[9]), 1, (255, 0, 0), 4)
+    
+    return img_raw
