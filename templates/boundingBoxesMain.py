@@ -43,6 +43,9 @@ class MainView(object):
         self.lbl_rutai.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_rutai.setObjectName("lbl_rutai")
         self.verticalLayout_3.addWidget(self.lbl_rutai)
+        self.bttn_nopor = QtWidgets.QPushButton(self.frame)
+        self.bttn_nopor.setObjectName("bttn_nopor")
+        self.verticalLayout_3.addWidget(self.bttn_nopor)
         self.bttn_boxes = QtWidgets.QPushButton(self.frame_3)
         self.bttn_boxes.setObjectName("bttn_boxes")
         self.verticalLayout_3.addWidget(self.bttn_boxes)
@@ -87,18 +90,26 @@ class MainView(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.bttn_nopor.setStyleSheet(
+            "background-color: red; color: white; border-radius: 2px;")
+        self.bttn_boxes.setStyleSheet(
+            "background-color: yellow; border-radius: 2px;")
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "BoundingBoxes"))
-        self.bttn_selectimg.setText(_translate("MainWindow", "Buscar xml"))
-        self.lbl_rutai.setText(_translate("MainWindow", "Ruta"))
-        self.bttn_boxes.setText(_translate("MainWindow", "Buscar imagenes"))
+        self.bttn_selectimg.setText(_translate("MainWindow", "Abrir imagenes"))
+        self.lbl_rutai.setText(_translate(
+            "MainWindow", "Oprime el boton de\narriba para encontrar\ntus imagenes"))
+        self.bttn_nopor.setText(_translate("MainWindow", "Inapropiada"))
+        self.bttn_boxes.setText(_translate("MainWindow", "Sin objetos"))
         self.bttn_prev.setText(_translate("MainWindow", "prev"))
         self.bttn_next.setText(_translate("MainWindow", "next"))
-        self.lbl_titulo.setText(_translate("MainWindow", "Nombre de la imagen"))
+        self.lbl_titulo.setText(_translate(
+            "MainWindow", "Nombre de la imagen"))
         self.lbl_imagen.setText(_translate("MainWindow", "Imagen"))
 
 
