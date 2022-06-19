@@ -1,5 +1,6 @@
 from importlib.resources import path
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from utils.opencv import *
 from utils.xml import xml_annotation, xml_get_name
@@ -25,7 +26,8 @@ class MainViewController(QtWidgets.QMainWindow):
 
         self.ui.bttn_next.clicked.connect(lambda: self.changeImagen('>'))
         self.ui.bttn_prev.clicked.connect(lambda: self.changeImagen('<'))
-
+        self.ui.bttn_boxes.clicked.connect(lambda: self.moverSinObjetos())
+        self.ui.bttn_nopor.clicked.connect(lambda: self.moverInapropiado())
         self.ui.listView.doubleClicked.connect(self.onCliked)
 
         self.ui.bttn_nopor.setEnabled(False)
@@ -34,6 +36,14 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_next.setEnabled(False)
 
         self.show()
+
+    def moverInapropiado(self):
+
+        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?"):
+            print("Me la pelas")
+
+    def moverSinObjetos(self):
+        pass
 
     def controllersBttns(self, i):
         if i == (len(self.list_xml_paths) - 1):
@@ -186,5 +196,24 @@ class MainViewController(QtWidgets.QMainWindow):
         imagen = QImage(
             imagen_cv.data, imagen_cv.shape[1], imagen_cv.shape[0], QImage.Format_RGB888).rgbSwapped()
         pix = QPixmap.fromImage(imagen).scaled(
-            1000, 1000, QtCore.Qt.KeepAspectRatio)
+            854, 480, QtCore.Qt.KeepAspectRatio)
         self.ui.lbl_imagen.setPixmap(pix)
+
+    def messageBoxQuestion(self, message):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+
+        # setting message for Message Box
+        msg.setText(message)
+
+        # setting Message box window title
+        msg.setWindowTitle("Advertencia")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+
+        ret_val = msg.exec_()
+
+        if QMessageBox.Ok == ret_val:
+            return True
+        return False
