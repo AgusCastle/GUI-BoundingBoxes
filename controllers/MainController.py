@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from utils.opencv import *
 from utils.xml import xml_annotation, xml_get_name
-from utils.files import returnAllfilesbyType
+from utils.files import returnAllfilesbyType, imagenInapropiada, imagenSinObjetos
 
 from templates.boundingBoxesMain import MainView
 from controllers.BoxController import BoxWidget
@@ -40,10 +40,49 @@ class MainViewController(QtWidgets.QMainWindow):
     def moverInapropiado(self):
 
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?"):
-            print("Me la pelas")
+            imagenInapropiada(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
+                Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
+            self.list_img_paths.pop(self.index)
+            self.list_xml_paths.pop(self.index)
+
+            if self.index == 0:
+                self.index = 0
+
+            if self.index == len(self.list_img_paths) + 1:
+                self.index = len(self.list_img_paths) - 1
+
+            self.index = self.index - 1
+
+            self.controllersBttns(self.index)
+            name = xml_get_name(self.list_xml_paths[self.index])
+            self.ruta_imagen = self.list_img_paths[self.index]
+            self.ui.lbl_titulo.setText(name)
+            self.ruta_xml = self.list_xml_paths[self.index]
+
+            self.setBoxes()
 
     def moverSinObjetos(self):
-        pass
+        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?"):
+            imagenSinObjetos(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
+                Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
+            self.list_img_paths.pop(self.index)
+            self.list_xml_paths.pop(self.index)
+
+            if self.index == 0:
+                self.index = 0
+
+            if self.index == len(self.list_img_paths) + 1:
+                self.index = len(self.list_img_paths) - 1
+
+            self.index = self.index - 1
+
+            self.controllersBttns(self.index)
+            name = xml_get_name(self.list_xml_paths[self.index])
+            self.ruta_imagen = self.list_img_paths[self.index]
+            self.ui.lbl_titulo.setText(name)
+            self.ruta_xml = self.list_xml_paths[self.index]
+
+            self.setBoxes()
 
     def controllersBttns(self, i):
         if i == (len(self.list_xml_paths) - 1):
@@ -109,6 +148,7 @@ class MainViewController(QtWidgets.QMainWindow):
             # Ruta del directorio de las imagenes
             ruta_imagenes = str(p.parent)
             # Ruta del directorio de los XML
+            self.root = str(p.parents[1])
             ruta_xmls = str(p.parents[1]) + '/annotations'
             self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
             self.list_img_paths = returnAllfilesbyType(ruta_imagenes, '.jpg')
