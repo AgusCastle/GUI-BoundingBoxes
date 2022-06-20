@@ -45,13 +45,13 @@ class MainViewController(QtWidgets.QMainWindow):
             self.list_img_paths.pop(self.index)
             self.list_xml_paths.pop(self.index)
 
-            if self.index == 0:
+            self.index = self.index - 1
+
+            if self.index <= 0:
                 self.index = 0
 
             if self.index == len(self.list_img_paths) + 1:
                 self.index = len(self.list_img_paths) - 1
-
-            self.index = self.index - 1
 
             self.controllersBttns(self.index)
             name = xml_get_name(self.list_xml_paths[self.index])
