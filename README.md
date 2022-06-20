@@ -1,9 +1,26 @@
 # GUI-BoundingBoxes
-Interfaz grafica de usuario (GUI) en python que pueda abrir y mostrar una imagen ajustada a un area de trabajo especifica sin modificar su relacion de aspecto
-## Este diseño es preliminar
+Interfaz para la validacion de las anotocianes sobre imagenes en el dataset.
 
-<img width="1362" alt="Captura de Pantalla 2022-05-29 a la(s) 0 43 22" src="https://user-images.githubusercontent.com/43832949/170854136-0be38282-6d9a-4f3b-926d-01b2c63e9ea6.png">
+## Instrucciones 
 
-## Primero se debe buscar la carpeta de donde se encuentran las anotaciones 'XML'.
+### Paso 1
+El primer boton habilitado te dejara seleccionar una imagen debes seleccionar solo una y esta debe estar en la carpeta con esta estructura
 
-## Despues se habilitara el boton de buscar la carpeta de las imagenes(eso queire decir que las imagenes deben estar en la carpeta)
+- annotations(Esta carpeta puede ser Annotations o annotation)
+- imagenes 
+  - imagen1.jpg
+  - imagen2.jpg
+  - ..
+  - ...
+
+### Paso 2
+
+Al seleccionar la imagen se habilitaran los controles para ir iterando por cada una.
+Para cambiar el tipo de cubreboca se debe dar doble click en la list view de la izquierda
+
+### Paso 3
+
+Al tener esa vista ahora podras modificar el tipo de cubreboca que hay y se actualizara en la imagen.
+
+Nota: Esta ventana se cierra al apretar en el de cerrar no al quitar el foco sobre ella
+
