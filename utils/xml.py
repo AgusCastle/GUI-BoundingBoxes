@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-labels = {"cloth": 0, "none": 1, "respirator": 2, "surgical": 3, "valve": 4}
+labels = {'other':0, 'cloth':1, 'other':2, 'none':3, 'respirator':4, 'surgical':5, 'valve':6}
 
 
 def xml_annotation(xml_path):
@@ -32,7 +32,7 @@ def xml_update(xml_path, index, new_class):
     for i, object in enumerate(root.iter('object')):
         if i == index:
             object.find('name').text = new_class
-            #object.find('label').text = labels[new_class]
+            object.find('label').text = str(labels[new_class])
             object.find('score').text = "2.0"
     tree.write(xml_path)
 

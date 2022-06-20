@@ -40,7 +40,7 @@ class BoxWidget(QtWidgets.QDialog):
         elif rad == 4:
             value ='respirator'
         elif rad == 5:
-            value = 'others'
+            value = 'other'
         elif rad == 6:
             value ='none'
         

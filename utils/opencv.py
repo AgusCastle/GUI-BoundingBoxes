@@ -19,7 +19,9 @@ def setBoxesToImage(path, lis={}):
         cv2.putText(image, label + " " + str(count + 1),
                     (box[0], box[3] + 18), font, size_font, color, grosor)
         count += 1
-    return image, colors
+
+    cv2.imwrite('./img.jpg', image)
+    return colors
 
 
 def cutImageBox(path, array):
@@ -38,7 +40,7 @@ def boundingBoxColor(label):
         return (0, 255, 0)
     elif label == 'respirator':
         return (0, 255, 255)  # Color amarillo
-    elif label == 'others':
+    elif label == 'other':
         return (0, 165, 255)  # Color rojo
     elif label == 'none':
         return (0, 0, 255)

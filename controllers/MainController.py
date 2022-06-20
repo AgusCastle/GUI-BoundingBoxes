@@ -9,6 +9,7 @@ from utils.files import returnAllfilesbyType, imagenInapropiada, imagenSinObjeto
 from templates.boundingBoxesMain import MainView
 from controllers.BoxController import BoxWidget
 from pathlib import Path
+import platform
 
 
 class MainViewController(QtWidgets.QMainWindow):
@@ -129,7 +130,7 @@ class MainViewController(QtWidgets.QMainWindow):
             rad = 3
         elif self.imgdata['labels'][index] == 'respirator':
             rad = 4
-        elif self.imgdata['labels'][index] == 'others':
+        elif self.imgdata['labels'][index] == 'other':
             rad = 5
         elif self.imgdata['labels'][index] == 'none':
             rad = 6
@@ -141,7 +142,8 @@ class MainViewController(QtWidgets.QMainWindow):
         path_img = QtWidgets.QFileDialog.getOpenFileName(
             None, 'Buscar Imagen', '.', 'Image Files (*.jpg *.png)')
 
-        if path_img[0]:
+        if path_img[0] :
+            
             p = Path(path_img[0])
             # Imagen actual la cual despues se indexara
             self.ruta_imagen = path_img[0]
@@ -151,18 +153,34 @@ class MainViewController(QtWidgets.QMainWindow):
             self.root = str(p.parents[1])
             ruta_xmls = str(p.parents[1]) + '/annotations'
             self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
+            if len(self.list_xml_paths)==0:
+                ruta_xmls = str(p.parents[1]) + '/Annotations'
+                self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
+
             self.list_img_paths = returnAllfilesbyType(ruta_imagenes, '.jpg')
             self.list_img_paths.extend(
                 returnAllfilesbyType(ruta_imagenes, '.png'))
+
+            if platform.system()=='Windows':
+                wd_list = []
+                for i in self.list_xml_paths:
+                    wd_list.append(i.replace('\\', '/'))
+                
+                self.list_xml_paths = wd_list
+
+                wd_list = []
+                for i in self.list_img_paths:
+                    wd_list.append(i.replace('\\', '/'))
+                
+                self.list_img_paths = wd_list
+
             self.list_img_paths.sort()
             self.list_xml_paths.sort()
-
+            
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.index = self.list_img_paths.index(path_img[0])
-
                 name = xml_get_name(self.list_xml_paths[self.index])
                 self.ui.lbl_titulo.setText(name)
-
                 self.ruta_imagen = self.list_img_paths[self.index]
                 self.ruta_xml = self.list_xml_paths[self.index]
 
@@ -177,7 +195,7 @@ class MainViewController(QtWidgets.QMainWindow):
                 self.ui.bttn_nopor.setEnabled(True)
                 self.ui.bttn_boxes.setEnabled(True)
                 self.setBoxes()
-
+                
     def validarIntegridad(self, list_xml, list_img):
 
         if len(list_xml) != len(list_img):
@@ -221,8 +239,7 @@ class MainViewController(QtWidgets.QMainWindow):
 
         self.imgdata = xml_annotation(self.ruta_xml)
 
-        imagen_cv, colors = setBoxesToImage(self.ruta_imagen, self.imgdata)
-
+        colors = setBoxesToImage(self.ruta_imagen, self.imgdata)
         count = 0
         for i, c in zip(self.imgdata['labels'], colors):
             label = QtWidgets.QListWidgetItem()
@@ -232,11 +249,8 @@ class MainViewController(QtWidgets.QMainWindow):
             label.setText(i + " " + str(count + 1))
             self.ui.listView.addItem(label)
             count += 1
-
-        imagen = QImage(
-            imagen_cv.data, imagen_cv.shape[1], imagen_cv.shape[0], QImage.Format_RGB888).rgbSwapped()
-        pix = QPixmap.fromImage(imagen).scaled(
-            854, 480, QtCore.Qt.KeepAspectRatio)
+        pix = QPixmap('./img.jpg').scaled(
+            886, 498, QtCore.Qt.KeepAspectRatio)
         self.ui.lbl_imagen.setPixmap(pix)
 
     def messageBoxQuestion(self, message):
