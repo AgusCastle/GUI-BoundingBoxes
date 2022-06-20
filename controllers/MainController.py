@@ -250,7 +250,7 @@ class MainViewController(QtWidgets.QMainWindow):
             self.ui.listView.addItem(label)
             count += 1
         pix = QPixmap('./img.jpg').scaled(
-            886, 498, QtCore.Qt.KeepAspectRatio)
+            1126, 632, QtCore.Qt.KeepAspectRatio)
         self.ui.lbl_imagen.setPixmap(pix)
 
     def messageBoxQuestion(self, message):
