@@ -36,6 +36,15 @@ def xml_update(xml_path, index, new_class):
             object.find('score').text = "2.0"
     tree.write(xml_path)
 
+def xml_delete_bounding(xml_path, index):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    for i, object in enumerate(root.iter('object')):
+        if i == index:
+            object.clear()
+    tree.write(xml_path)
+
 
 def xml_get_name(xml_path):
     tree = ET.parse(xml_path)

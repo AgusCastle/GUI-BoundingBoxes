@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 from templates.WidgetCourtImage import Ui_Form
-from utils.xml import xml_update
+from utils.xml import xml_update, xml_delete_bounding
 
 class BoxWidget(QtWidgets.QDialog):
     def __init__(self, rad, path_xml, index, pix, func):
@@ -26,9 +26,13 @@ class BoxWidget(QtWidgets.QDialog):
         self.ui.radio_bttn_f.clicked.connect(lambda: self.updateXml(6))
 
         self.ui.lbl_imagen.setPixmap(pix)
+        self.ui.bttn_delete.clicked.connect(lambda: self.deleteBB())
 
         self.show()
         
+    def deleteBB(self):
+        xml_delete_bounding(self.path_xml, self.index)
+
 
     def updateXml(self, rad):
         
