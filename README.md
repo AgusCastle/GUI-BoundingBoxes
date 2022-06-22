@@ -3,6 +3,29 @@ Interfaz para la validacion de las anotocianes sobre imagenes en el dataset.
 
 ## Instrucciones 
 
+### Hot Keys
+
+#### Ventana principal
+| Tecla | Accion |
+|    :----:   |    :----:   | 
+| A | Anterior imagen  |
+| D |  Siguiente imagen |
+| L | Error de deteccion |
+| J | Imagen inapropiada |
+| Boton arriba | Seleccionar bounding box |
+| Boton abajo | Seleccionar bounding box |
+| Intro | Abrir bounding box |
+
+#### Ventana de imagen cortada
+| Tecla | Accion |
+|    :----:   |    :----:   | 
+| Boton izq | Siguiente clase |
+| Boton der | Anterior clase |
+| Esc  | Para cerra ventana |
+
+
+
+
 ### Paso 1
 El primer boton habilitado te dejara seleccionar una imagen debes seleccionar solo una y esta debe estar en la carpeta con esta estructura
 
