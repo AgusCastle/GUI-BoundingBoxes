@@ -13,6 +13,7 @@ class BoxWidget(QtWidgets.QDialog):
                             self.ui.radio_bttn_e, self.ui.radio_bttn_f ]
         if rad > 0 :
             self.array_radios[rad - 1].setChecked(True)
+            self.array_radios[rad - 1].setFocus()
 
         self.path_xml = path_xml
         self.index = index
@@ -27,6 +28,7 @@ class BoxWidget(QtWidgets.QDialog):
         self.ui.lbl_imagen.setPixmap(pix)
 
         self.show()
+        
 
     def updateXml(self, rad):
         
@@ -46,5 +48,4 @@ class BoxWidget(QtWidgets.QDialog):
         
         xml_update(self.path_xml, self.index, value)
         self.func()
-
 

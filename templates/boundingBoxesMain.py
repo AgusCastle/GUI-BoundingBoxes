@@ -94,6 +94,19 @@ class MainView(object):
             "background-color: red; color: white; border-radius: 2px;")
         self.bttn_boxes.setStyleSheet(
             "background-color: yellow; border-radius: 2px;")
+        
+        font = QtGui.QFont()
+        font.setPixelSize(18)
+        self.lbl_titulo.setFont(font)
+        font.setPixelSize(18)
+        self.listView.setFont(font)
+        font.setPixelSize(16)
+        self.bttn_boxes.setFont(font)
+        self.bttn_nopor.setFont(font)
+        self.bttn_next.setFont(font)
+        self.bttn_prev.setFont(font)
+        self.bttn_selectimg.setFont(font)
+        self.lbl_rutai.setFont(font)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

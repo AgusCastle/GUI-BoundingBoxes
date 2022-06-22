@@ -15,7 +15,7 @@ from PyQt5.QtCore import pyqtSlot, QObject
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(550, 457)
+        Form.resize(750, 457)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_imagen = QtWidgets.QLabel(Form)
@@ -47,7 +47,20 @@ class Ui_Form(object):
         self.radio_bttn_f = QtWidgets.QRadioButton(self.frame)
         self.radio_bttn_f.setObjectName("radio_bttn_f")
         self.horizontalLayout.addWidget(self.radio_bttn_f)
+        self.bttn_delete = QtWidgets.QPushButton(self.frame)
+        self.bttn_delete.setObjectName("bttn_delete")
+        self.horizontalLayout.addWidget(self.bttn_delete)
         self.verticalLayout.addWidget(self.frame)
+
+        font = QtGui.QFont()
+        font.setPixelSize(18)
+        self.radio_bttn_a.setFont(font)
+        self.radio_bttn_b.setFont(font)
+        self.radio_bttn_c.setFont(font)
+        self.radio_bttn_d.setFont(font)
+        self.radio_bttn_e.setFont(font)
+        self.radio_bttn_f.setFont(font)
+        self.bttn_delete.setFont(font)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -62,6 +75,7 @@ class Ui_Form(object):
         self.radio_bttn_d.setText(_translate("Form", "respirator"))
         self.radio_bttn_e.setText(_translate("Form", "others"))
         self.radio_bttn_f.setText(_translate("Form", "none"))
+        self.bttn_delete.setText(_translate("Form", "Eliminar"))
 
 
 if __name__ == "__main__":

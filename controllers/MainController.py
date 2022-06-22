@@ -44,20 +44,49 @@ class MainViewController(QtWidgets.QMainWindow):
 
         self.show()
 
+    def keyReleaseEvent(self,event):
+        if event.key() == QtCore.Qt.Key.Key_Enter:
+            index = self.ui.listView.currentRow()
 
-    def keyPressEvent(self, event):
+            h, w, imagen_cv = cutImageBox(
+                self.ruta_imagen, self.imgdata['boxes'][index])
+            imagen = QImage(imagen_cv.data.tobytes(), w, h, w *
+                            3, QImage.Format_RGB888).rgbSwapped()
+            pix = QPixmap.fromImage(imagen).scaled(
+                450, 450, QtCore.Qt.KeepAspectRatio)
 
-        if event.key() == QtCore.Qt.Key.Key_Dead_a:
-            self.changeImagen('>')
-        
+            rad = 0
+            if self.imgdata['labels'][index] == 'surgical':
+                rad = 1
+            elif self.imgdata['labels'][index] == 'valve':
+                rad = 2
+            elif self.imgdata['labels'][index] == 'cloth':
+                rad = 3
+            elif self.imgdata['labels'][index] == 'respirator':
+                rad = 4
+            elif self.imgdata['labels'][index] == 'other':
+                rad = 5
+            elif self.imgdata['labels'][index] == 'none':
+                rad = 6
+
+            self.uiBox = BoxWidget(rad, self.ruta_xml, index, pix, self.setBoxes)
+
         if event.key() == QtCore.Qt.Key.Key_D:
+            self.changeImagen('>')
+
+        if event.key() == QtCore.Qt.Key.Key_A:
             self.changeImagen('<')
 
-        
+        if event.key() == QtCore.Qt.Key.Key_L:
+            self.moverSinObjetos()
 
+        if event.key() == QtCore.Qt.Key.Key_J:
+            self.moverInapropiado()      
+
+    
     def moverInapropiado(self):
 
-        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?"):
+        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Inapropiada"):
             imagenInapropiada(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
             self.list_img_paths.pop(self.index)
@@ -80,7 +109,7 @@ class MainViewController(QtWidgets.QMainWindow):
             self.setBoxes()
 
     def moverSinObjetos(self):
-        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?"):
+        if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Error de deteccion"):
             imagenSinObjetos(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
             self.list_img_paths.pop(self.index)
@@ -275,7 +304,7 @@ class MainViewController(QtWidgets.QMainWindow):
             1126, 632, QtCore.Qt.KeepAspectRatio)
         self.ui.lbl_imagen.setPixmap(pix)
 
-    def messageBoxQuestion(self, message):
+    def messageBoxQuestion(self, message, title):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Question)
 
@@ -283,7 +312,7 @@ class MainViewController(QtWidgets.QMainWindow):
         msg.setText(message)
 
         # setting Message box window title
-        msg.setWindowTitle("Advertencia")
+        msg.setWindowTitle(title)
 
         # declaring buttons on Message Box
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
