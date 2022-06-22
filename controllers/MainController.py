@@ -1,4 +1,3 @@
-from importlib.resources import path
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
@@ -10,6 +9,7 @@ from templates.boundingBoxesMain import MainView
 from controllers.BoxController import BoxWidget
 from pathlib import Path
 import platform
+from natsort import natsorted, os_sorted, realsorted, humansorted
 
 
 class MainViewController(QtWidgets.QMainWindow):
@@ -36,7 +36,24 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_prev.setEnabled(False)
         self.ui.bttn_next.setEnabled(False)
 
+        self.ui.bttn_boxes.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.ui.bttn_next.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.ui.bttn_nopor.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.ui.bttn_selectimg.setFocusPolicy(QtCore.Qt.NoFocus)
+        #self.ui.listView.setFocusPolicy(QtCore.Qt.NoFocus)
+
         self.show()
+
+
+    def keyPressEvent(self, event):
+
+        if event.key() == QtCore.Qt.Key.Key_Dead_a:
+            self.changeImagen('>')
+        
+        if event.key() == QtCore.Qt.Key.Key_D:
+            self.changeImagen('<')
+
+        
 
     def moverInapropiado(self):
 
@@ -97,19 +114,20 @@ class MainViewController(QtWidgets.QMainWindow):
             self.ui.bttn_prev.setEnabled(True)
 
     def changeImagen(self, op):
-
-        if op == '>':
+        if op == '>' and self.index< len(self.list_img_paths):
             self.index += 1
-        if op == '<':
+        if op == '<' and self.index > 0:
             self.index -= 1
 
-        self.controllersBttns(self.index)
-        name = xml_get_name(self.list_xml_paths[self.index])
-        self.ruta_imagen = self.list_img_paths[self.index]
-        self.ui.lbl_titulo.setText(name)
-        self.ruta_xml = self.list_xml_paths[self.index]
+        if self.index >= 0 and self.index< len(self.list_img_paths) :
 
-        self.setBoxes()
+            self.controllersBttns(self.index)
+            name = xml_get_name(self.list_xml_paths[self.index])
+            self.ruta_imagen = self.list_img_paths[self.index]
+            self.ui.lbl_titulo.setText(name)
+            self.ruta_xml = self.list_xml_paths[self.index]
+
+            self.setBoxes()
 
     def onCliked(self, item):
         index = self.ui.listView.currentRow()
@@ -174,8 +192,12 @@ class MainViewController(QtWidgets.QMainWindow):
                 
                 self.list_img_paths = wd_list
 
-            self.list_img_paths.sort()
-            self.list_xml_paths.sort()
+            if platform.system()!='Windows':
+                self.list_img_paths.sort()
+                self.list_xml_paths.sort()
+            else:
+                self.list_img_paths=os_sorted(self.list_img_paths)
+                self.list_xml_paths=os_sorted(self.list_xml_paths)
             
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.index = self.list_img_paths.index(path_img[0])

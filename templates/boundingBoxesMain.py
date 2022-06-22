@@ -105,7 +105,7 @@ class MainView(object):
         self.lbl_rutai.setText(_translate(
             "MainWindow", "Oprime el boton de\narriba para encontrar\ntus imagenes"))
         self.bttn_nopor.setText(_translate("MainWindow", "Inapropiada"))
-        self.bttn_boxes.setText(_translate("MainWindow", "Sin objetos"))
+        self.bttn_boxes.setText(_translate("MainWindow", "Error de Deteccion"))
         self.bttn_prev.setText(_translate("MainWindow", "prev"))
         self.bttn_next.setText(_translate("MainWindow", "next"))
         self.lbl_titulo.setText(_translate(

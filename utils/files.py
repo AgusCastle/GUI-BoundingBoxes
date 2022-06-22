@@ -26,7 +26,7 @@ def imagenInapropiada(root, path_img, path_xml, name_img, name_xml):
 
 
 def imagenSinObjetos(root, path_img, path_xml, name_img, name_xml):
-    full_path = root + '/empty/ImagesJPGs'
+    full_path = root + '/fails/ImagesJPGs'
     os.makedirs(full_path, exist_ok=True)
 
     source = r'' + path_img
@@ -34,7 +34,7 @@ def imagenSinObjetos(root, path_img, path_xml, name_img, name_xml):
 
     shutil.move(source, destination)
 
-    full_path = root + '/empty/annotations'
+    full_path = root + '/fails/annotations'
     os.makedirs(full_path, exist_ok=True)
     source = r'' + path_xml
     destination = r'' + full_path + '/' + name_xml
