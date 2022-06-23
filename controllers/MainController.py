@@ -45,7 +45,7 @@ class MainViewController(QtWidgets.QMainWindow):
         self.show()
 
     def keyReleaseEvent(self, event):
-        if event.key() == QtCore.Qt.Key.Key_Enter:
+        if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Control:
             index = self.ui.listView.currentRow()
 
             h, w, imagen_cv = cutImageBox(

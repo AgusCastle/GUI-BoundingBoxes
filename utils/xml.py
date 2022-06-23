@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-labels = {'other': 0, 'cloth': 1, 'other': 2, 'none': 3,
+labels = {'other': -1, 'cloth': 1, 'other': 2, 'none': 3,
           'respirator': 4, 'surgical': 5, 'valve': 6}
 
 

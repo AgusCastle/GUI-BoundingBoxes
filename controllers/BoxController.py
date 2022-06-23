@@ -35,6 +35,7 @@ class BoxWidget(QtWidgets.QDialog):
     def deleteBB(self):
         if self.messageBoxQuestion("¿Deseas eliminar la Bounding Box?", "Eliminar"):
             xml_delete_bounding(self.path_xml, self.index)
+            self.func()
 
     def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Backspace:
