@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
-labels = {'other':0, 'cloth':1, 'other':2, 'none':3, 'respirator':4, 'surgical':5, 'valve':6}
+labels = {'other': 0, 'cloth': 1, 'other': 2, 'none': 3,
+          'respirator': 4, 'surgical': 5, 'valve': 6}
 
 
 def xml_annotation(xml_path):
@@ -36,13 +37,20 @@ def xml_update(xml_path, index, new_class):
             object.find('score').text = "2.0"
     tree.write(xml_path)
 
+
 def xml_delete_bounding(xml_path, index):
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
+    aux = None
+    size = 0
     for i, object in enumerate(root.iter('object')):
         if i == index:
-            object.clear()
+            aux = object
+        size += 1
+
+    root.find('faces').text = str(size - 1)
+    root.remove(aux)
     tree.write(xml_path)
 
 

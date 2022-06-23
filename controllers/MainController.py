@@ -40,11 +40,11 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_next.setFocusPolicy(QtCore.Qt.NoFocus)
         self.ui.bttn_nopor.setFocusPolicy(QtCore.Qt.NoFocus)
         self.ui.bttn_selectimg.setFocusPolicy(QtCore.Qt.NoFocus)
-        #self.ui.listView.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.ui.listView.setFocusPolicy(QtCore.Qt.NoFocus)
 
         self.show()
 
-    def keyReleaseEvent(self,event):
+    def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter:
             index = self.ui.listView.currentRow()
 
@@ -69,7 +69,8 @@ class MainViewController(QtWidgets.QMainWindow):
             elif self.imgdata['labels'][index] == 'none':
                 rad = 6
 
-            self.uiBox = BoxWidget(rad, self.ruta_xml, index, pix, self.setBoxes)
+            self.uiBox = BoxWidget(
+                rad, self.ruta_xml, index, pix, self.setBoxes)
 
         if event.key() == QtCore.Qt.Key.Key_D:
             self.changeImagen('>')
@@ -81,9 +82,8 @@ class MainViewController(QtWidgets.QMainWindow):
             self.moverSinObjetos()
 
         if event.key() == QtCore.Qt.Key.Key_J:
-            self.moverInapropiado()      
+            self.moverInapropiado()
 
-    
     def moverInapropiado(self):
 
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Inapropiada"):
@@ -143,12 +143,12 @@ class MainViewController(QtWidgets.QMainWindow):
             self.ui.bttn_prev.setEnabled(True)
 
     def changeImagen(self, op):
-        if op == '>' and self.index< len(self.list_img_paths):
+        if op == '>' and self.index < len(self.list_img_paths):
             self.index += 1
         if op == '<' and self.index > 0:
             self.index -= 1
 
-        if self.index >= 0 and self.index< len(self.list_img_paths) :
+        if self.index >= 0 and self.index < len(self.list_img_paths):
 
             self.controllersBttns(self.index)
             name = xml_get_name(self.list_xml_paths[self.index])
@@ -189,8 +189,8 @@ class MainViewController(QtWidgets.QMainWindow):
         path_img = QtWidgets.QFileDialog.getOpenFileName(
             None, 'Buscar Imagen', '.', 'Image Files (*.jpg *.png)')
 
-        if path_img[0] :
-            
+        if path_img[0]:
+
             p = Path(path_img[0])
             # Imagen actual la cual despues se indexara
             self.ruta_imagen = path_img[0]
@@ -200,7 +200,7 @@ class MainViewController(QtWidgets.QMainWindow):
             self.root = str(p.parents[1])
             ruta_xmls = str(p.parents[1]) + '/annotations'
             self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
-            if len(self.list_xml_paths)==0:
+            if len(self.list_xml_paths) == 0:
                 ruta_xmls = str(p.parents[1]) + '/Annotations'
                 self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
 
@@ -208,26 +208,22 @@ class MainViewController(QtWidgets.QMainWindow):
             self.list_img_paths.extend(
                 returnAllfilesbyType(ruta_imagenes, '.png'))
 
-            if platform.system()=='Windows':
+            if platform.system() == 'Windows':
                 wd_list = []
                 for i in self.list_xml_paths:
                     wd_list.append(i.replace('\\', '/'))
-                
+
                 self.list_xml_paths = wd_list
 
                 wd_list = []
                 for i in self.list_img_paths:
                     wd_list.append(i.replace('\\', '/'))
-                
+
                 self.list_img_paths = wd_list
 
-            if platform.system()!='Windows':
-                self.list_img_paths.sort()
-                self.list_xml_paths.sort()
-            else:
-                self.list_img_paths=os_sorted(self.list_img_paths)
-                self.list_xml_paths=os_sorted(self.list_xml_paths)
-            
+            self.list_img_paths = os_sorted(self.list_img_paths)
+            self.list_xml_paths = os_sorted(self.list_xml_paths)
+
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.index = self.list_img_paths.index(path_img[0])
                 name = xml_get_name(self.list_xml_paths[self.index])
@@ -246,7 +242,7 @@ class MainViewController(QtWidgets.QMainWindow):
                 self.ui.bttn_nopor.setEnabled(True)
                 self.ui.bttn_boxes.setEnabled(True)
                 self.setBoxes()
-                
+
     def validarIntegridad(self, list_xml, list_img):
 
         if len(list_xml) != len(list_img):
