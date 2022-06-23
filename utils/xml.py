@@ -50,7 +50,8 @@ def xml_delete_bounding(xml_path, index):
         size += 1
 
     root.find('faces').text = str(size - 1)
-    root.remove(aux)
+    if aux != None:
+        root.remove(aux)
     tree.write(xml_path)
 
 
