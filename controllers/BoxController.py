@@ -41,8 +41,6 @@ class BoxWidget(QtWidgets.QDialog):
     def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Backspace:
             self.deleteBB()
-            self.func()
-            self.close()
 
     def messageBoxQuestion(self, message, title):
         msg = QMessageBox()
