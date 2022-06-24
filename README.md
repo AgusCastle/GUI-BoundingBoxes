@@ -1,6 +1,7 @@
 # GUI-BoundingBoxes
 
 Interfaz para la validacion de las anotocianes sobre imagenes en el dataset.
+Los valores 0 en faces del xml es error de deteccion y el valor -1 indica imagen inapropiada.
 
 ## Instrucciones
 

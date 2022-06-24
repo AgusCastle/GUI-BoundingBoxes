@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from utils.opencv import *
-from utils.xml import xml_annotation, xml_get_name
+from utils.xml import xml_annotation, xml_get_name, xml_update_faces
 from utils.files import returnAllfilesbyType, imagenInapropiada, imagenSinObjetos
 
 from templates.boundingBoxesMain import MainView
@@ -89,46 +89,46 @@ class MainViewController(QtWidgets.QMainWindow):
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Inapropiada"):
             imagenInapropiada(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
-            self.list_img_paths.pop(self.index)
-            self.list_xml_paths.pop(self.index)
+            # self.list_img_paths.pop(self.index)
+            # self.list_xml_paths.pop(self.index)
 
-            self.index = self.index - 1
+            # self.index = self.index - 1
 
-            if self.index <= 0:
-                self.index = 0
+            # if self.index <= 0:
+            #     self.index = 0
 
-            if self.index == len(self.list_img_paths) + 1:
-                self.index = len(self.list_img_paths) - 1
+            # if self.index == len(self.list_img_paths) + 1:
+            #     self.index = len(self.list_img_paths) - 1
 
-            self.controllersBttns(self.index)
-            name = xml_get_name(self.list_xml_paths[self.index])
-            self.ruta_imagen = self.list_img_paths[self.index]
-            self.ui.lbl_titulo.setText(name)
-            self.ruta_xml = self.list_xml_paths[self.index]
-
+            # self.controllersBttns(self.index)
+            # name = xml_get_name(self.list_xml_paths[self.index])
+            # self.ruta_imagen = self.list_img_paths[self.index]
+            # self.ui.lbl_titulo.setText(name)
+            # self.ruta_xml = self.list_xml_paths[self.index]
+            xml_update_faces(self.list_xml_paths[self.index], True)
             self.setBoxes()
 
     def moverSinObjetos(self):
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Error de deteccion"):
             imagenSinObjetos(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
-            self.list_img_paths.pop(self.index)
-            self.list_xml_paths.pop(self.index)
+            # self.list_img_paths.pop(self.index)
+            # self.list_xml_paths.pop(self.index)
 
-            if self.index == 0:
-                self.index = 0
+            # if self.index == 0:
+            #     self.index = 0
 
-            if self.index == len(self.list_img_paths) + 1:
-                self.index = len(self.list_img_paths) - 1
+            # if self.index == len(self.list_img_paths) + 1:
+            #     self.index = len(self.list_img_paths) - 1
 
-            self.index = self.index - 1
+            # self.index = self.index - 1
 
-            self.controllersBttns(self.index)
-            name = xml_get_name(self.list_xml_paths[self.index])
-            self.ruta_imagen = self.list_img_paths[self.index]
-            self.ui.lbl_titulo.setText(name)
-            self.ruta_xml = self.list_xml_paths[self.index]
-
+            # self.controllersBttns(self.index)
+            # name = xml_get_name(self.list_xml_paths[self.index])
+            # self.ruta_imagen = self.list_img_paths[self.index]
+            # self.ui.lbl_titulo.setText(name)
+            # self.ruta_xml = self.list_xml_paths[self.index]
+            xml_update_faces(self.list_xml_paths[self.index], False)
             self.setBoxes()
 
     def controllersBttns(self, i):
@@ -288,6 +288,21 @@ class MainViewController(QtWidgets.QMainWindow):
         labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
                   4: 'respirator', 5: 'surgical', 6: 'valve'}
         self.imgdata = xml_annotation(self.ruta_xml)
+
+        if self.imgdata['faces'] == 0:
+            self.ui.lbl_titulo.setStyleSheet(
+                'background-color: yellow; color: black')
+            self.ui.bttn_boxes.setEnabled(False)
+            self.ui.bttn_nopor.setEnabled(False)
+        elif self.imgdata['faces'] == -1:
+            self.ui.lbl_titulo.setStyleSheet(
+                'background-color: red; color: white')
+            self.ui.bttn_boxes.setEnabled(False)
+            self.ui.bttn_nopor.setEnabled(False)
+        else:
+            self.ui.lbl_titulo.setStyleSheet('')
+            self.ui.bttn_boxes.setEnabled(True)
+            self.ui.bttn_nopor.setEnabled(True)
 
         colors = setBoxesToImage(self.ruta_imagen, self.imgdata)
         count = 0

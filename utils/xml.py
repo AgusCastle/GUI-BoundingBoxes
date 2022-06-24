@@ -8,6 +8,7 @@ def xml_annotation(xml_path):
     root = tree.getroot()
     boxes = list()
     labels = list()
+    faces = int(root.find("faces").text)
     for object in root.iter('object'):
         label = object.find('label').text
         bbox = object.find('bndbox')
@@ -23,7 +24,7 @@ def xml_annotation(xml_path):
         ymax = int(bbox.find('ymax').text) - 1
         boxes.append([xmin, ymin, xmax, ymax])
         labels.append(int(label))
-    return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels}
+    return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels, 'faces': faces}
 
 
 def xml_update(xml_path, index, new_class):
@@ -60,6 +61,18 @@ def xml_get_name(xml_path):
     root = tree.getroot()
 
     return root.find('filename').text
+
+
+def xml_update_faces(xml_path, op):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    if op:
+        root.find('faces').text = str(-1)
+    else:
+        root.find('faces').text = str(0)
+
+    tree.write(xml_path)
 
 
 def xml_get_faces(xml_path):
