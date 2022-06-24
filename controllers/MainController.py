@@ -87,48 +87,16 @@ class MainViewController(QtWidgets.QMainWindow):
     def moverInapropiado(self):
 
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Inapropiada"):
+            xml_update_faces(self.list_xml_paths[self.index], True)
             imagenInapropiada(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
-            # self.list_img_paths.pop(self.index)
-            # self.list_xml_paths.pop(self.index)
-
-            # self.index = self.index - 1
-
-            # if self.index <= 0:
-            #     self.index = 0
-
-            # if self.index == len(self.list_img_paths) + 1:
-            #     self.index = len(self.list_img_paths) - 1
-
-            # self.controllersBttns(self.index)
-            # name = xml_get_name(self.list_xml_paths[self.index])
-            # self.ruta_imagen = self.list_img_paths[self.index]
-            # self.ui.lbl_titulo.setText(name)
-            # self.ruta_xml = self.list_xml_paths[self.index]
-            xml_update_faces(self.list_xml_paths[self.index], True)
             self.setBoxes()
 
     def moverSinObjetos(self):
         if self.messageBoxQuestion("Esta imagen se ignorara como parte del dataset, ¿Realmente desea eliminarlo?", "Error de deteccion"):
+            xml_update_faces(self.list_xml_paths[self.index], False)
             imagenSinObjetos(self.root, self.list_img_paths[self.index], self.list_xml_paths[self.index], str(
                 Path(self.list_img_paths[self.index]).name), str(Path(self.list_xml_paths[self.index]).name))
-            # self.list_img_paths.pop(self.index)
-            # self.list_xml_paths.pop(self.index)
-
-            # if self.index == 0:
-            #     self.index = 0
-
-            # if self.index == len(self.list_img_paths) + 1:
-            #     self.index = len(self.list_img_paths) - 1
-
-            # self.index = self.index - 1
-
-            # self.controllersBttns(self.index)
-            # name = xml_get_name(self.list_xml_paths[self.index])
-            # self.ruta_imagen = self.list_img_paths[self.index]
-            # self.ui.lbl_titulo.setText(name)
-            # self.ruta_xml = self.list_xml_paths[self.index]
-            xml_update_faces(self.list_xml_paths[self.index], False)
             self.setBoxes()
 
     def controllersBttns(self, i):
