@@ -121,7 +121,8 @@ class MainViewController(QtWidgets.QMainWindow):
             self.controllersBttns(self.index)
             name = xml_get_name(self.list_xml_paths[self.index])
             self.ruta_imagen = self.list_img_paths[self.index]
-            self.ui.lbl_titulo.setText(name)
+            self.ui.lbl_titulo.setText(
+                "{} --- {} / {}".format(name, self.index + 1, len(self.list_xml_paths)))
             self.ruta_xml = self.list_xml_paths[self.index]
 
             self.setBoxes()
@@ -197,7 +198,8 @@ class MainViewController(QtWidgets.QMainWindow):
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.index = self.list_img_paths.index(path_img[0])
                 name = xml_get_name(self.list_xml_paths[self.index])
-                self.ui.lbl_titulo.setText(name)
+                self.ui.lbl_titulo.setText(
+                    "{} --- {} / {}".format(name, self.index + 1, len(self.list_xml_paths)))
                 self.ruta_imagen = self.list_img_paths[self.index]
                 self.ruta_xml = self.list_xml_paths[self.index]
 
