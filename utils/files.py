@@ -15,14 +15,14 @@ def imagenInapropiada(root, path_img, path_xml, name_img, name_xml):
     source = r'' + path_img
     destination = r'' + full_path + '/' + name_img
 
-    shutil.move(source, destination)
+    shutil.copy(source, destination)
 
     full_path = root + '/inappropiate/annotations'
     os.makedirs(full_path, exist_ok=True)
     source = r'' + path_xml
     destination = r'' + full_path + '/' + name_xml
 
-    shutil.move(source, destination)
+    shutil.copy(source, destination)
 
 
 def imagenSinObjetos(root, path_img, path_xml, name_img, name_xml):
@@ -32,11 +32,11 @@ def imagenSinObjetos(root, path_img, path_xml, name_img, name_xml):
     source = r'' + path_img
     destination = r'' + full_path + '/' + name_img
 
-    shutil.move(source, destination)
+    shutil.copy(source, destination)
 
     full_path = root + '/fails/annotations'
     os.makedirs(full_path, exist_ok=True)
     source = r'' + path_xml
     destination = r'' + full_path + '/' + name_xml
 
-    shutil.move(source, destination)
+    shutil.copy(source, destination)
