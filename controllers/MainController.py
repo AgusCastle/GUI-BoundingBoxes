@@ -56,17 +56,17 @@ class MainViewController(QtWidgets.QMainWindow):
                 450, 450, QtCore.Qt.KeepAspectRatio)
 
             rad = 0
-            if self.imgdata['labels'][index] == 'surgical':
+            if self.imgdata['labels'][index] == 5:
                 rad = 1
-            elif self.imgdata['labels'][index] == 'valve':
+            elif self.imgdata['labels'][index] == 6:
                 rad = 2
-            elif self.imgdata['labels'][index] == 'cloth':
+            elif self.imgdata['labels'][index] == 1:
                 rad = 3
-            elif self.imgdata['labels'][index] == 'respirator':
+            elif self.imgdata['labels'][index] == 4:
                 rad = 4
-            elif self.imgdata['labels'][index] == 'other':
+            elif self.imgdata['labels'][index] == 0:
                 rad = 5
-            elif self.imgdata['labels'][index] == 'none':
+            elif self.imgdata['labels'][index] == 3:
                 rad = 6
 
             self.uiBox = BoxWidget(

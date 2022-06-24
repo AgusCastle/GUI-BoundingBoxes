@@ -17,7 +17,7 @@ Los valores 0 en faces del xml es error de deteccion y el valor -1 indica imagen
 |      J       |    Imagen inapropiada    |
 | Boton arriba | Seleccionar bounding box |
 | Boton abajo  | Seleccionar bounding box |
-|    Intro     |    Abrir bounding box    |
+| Intro o ctrl |    Abrir bounding box    |
 
 #### Ventana de imagen cortada
 
