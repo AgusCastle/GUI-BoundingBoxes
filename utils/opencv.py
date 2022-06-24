@@ -6,6 +6,9 @@ font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 size_font = 1
 grosor = 2
 
+labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
+          4: 'respirator', 5: 'surgical', 6: 'valve'}
+
 
 def setBoxesToImage(path, lis={}):
 
@@ -13,10 +16,10 @@ def setBoxesToImage(path, lis={}):
     colors = []
     count = 0
     for box, label in zip(lis['boxes'], lis['labels']):
-        color = boundingBoxColor(label)
+        color = boundingBoxColor(labels[label])
         colors.append(color)
         cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
-        cv2.putText(image, label + " " + str(count + 1),
+        cv2.putText(image, labels[label] + " " + str(count + 1),
                     (box[0], box[3] + 18), font, size_font, color, grosor)
         count += 1
 

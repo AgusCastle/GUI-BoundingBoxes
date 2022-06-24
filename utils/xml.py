@@ -9,7 +9,7 @@ def xml_annotation(xml_path):
     boxes = list()
     labels = list()
     for object in root.iter('object'):
-        label = object.find('name').text.lower().strip()
+        label = object.find('label').text
         bbox = object.find('bndbox')
 
         xmin = int(bbox.find('xmin').text) - 1
@@ -22,7 +22,7 @@ def xml_annotation(xml_path):
         xmax = int(bbox.find('xmax').text) - 1
         ymax = int(bbox.find('ymax').text) - 1
         boxes.append([xmin, ymin, xmax, ymax])
-        labels.append(label)
+        labels.append(int(label))
     return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels}
 
 

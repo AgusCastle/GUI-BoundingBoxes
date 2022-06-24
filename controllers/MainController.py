@@ -168,18 +168,20 @@ class MainViewController(QtWidgets.QMainWindow):
         pix = QPixmap.fromImage(imagen).scaled(
             450, 450, QtCore.Qt.KeepAspectRatio)
 
+        labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
+                  4: 'respirator', 5: 'surgical', 6: 'valve'}
         rad = 0
-        if self.imgdata['labels'][index] == 'surgical':
+        if self.imgdata['labels'][index] == 5:
             rad = 1
-        elif self.imgdata['labels'][index] == 'valve':
+        elif self.imgdata['labels'][index] == 6:
             rad = 2
-        elif self.imgdata['labels'][index] == 'cloth':
+        elif self.imgdata['labels'][index] == 1:
             rad = 3
-        elif self.imgdata['labels'][index] == 'respirator':
+        elif self.imgdata['labels'][index] == 4:
             rad = 4
-        elif self.imgdata['labels'][index] == 'other':
+        elif self.imgdata['labels'][index] == 0:
             rad = 5
-        elif self.imgdata['labels'][index] == 'none':
+        elif self.imgdata['labels'][index] == 3:
             rad = 6
 
         self.uiBox = BoxWidget(rad, self.ruta_xml, index, pix, self.setBoxes)
@@ -283,7 +285,8 @@ class MainViewController(QtWidgets.QMainWindow):
 
     def setBoxes(self):
         self.ui.listView.clear()
-
+        labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
+                  4: 'respirator', 5: 'surgical', 6: 'valve'}
         self.imgdata = xml_annotation(self.ruta_xml)
 
         colors = setBoxesToImage(self.ruta_imagen, self.imgdata)
@@ -293,7 +296,7 @@ class MainViewController(QtWidgets.QMainWindow):
             color = QPixmap(10, 10)
             color.fill(QColor(c[2], c[1], c[0]))
             label.setIcon(QIcon(color))
-            label.setText(i + " " + str(count + 1))
+            label.setText(labels[i] + " " + str(count + 1))
             self.ui.listView.addItem(label)
             count += 1
         pix = QPixmap('./img.jpg').scaled(
