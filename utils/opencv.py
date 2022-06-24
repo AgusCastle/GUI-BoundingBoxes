@@ -31,7 +31,12 @@ def cutImageBox(path, array):
     image = cv2.imread(path)
     image = image[array[1]:array[3], array[0]:array[2]]
     h, w, _ = image.shape
-    return h, w, image
+
+    s_ = 1000 / h
+    h_ = int(h * s_)
+    w_ = int(w * s_)
+    image = cv2.resize(image, (w_, h_), interpolation=cv2.INTER_CUBIC)
+    return h_, w_, image
 
 
 def boundingBoxColor(label):
