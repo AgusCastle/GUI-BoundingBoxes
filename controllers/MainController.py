@@ -1,9 +1,11 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
+from matplotlib.pyplot import get
 from utils.opencv import *
 from utils.xml import xml_annotation, xml_get_name, xml_update_faces
 from utils.files import returnAllfilesbyType, imagenInapropiada, imagenSinObjetos
+from utils.config import setConfig, getConfig
 
 from templates.boundingBoxesMain import MainView
 from controllers.BoxController import BoxWidget
@@ -21,7 +23,8 @@ class MainViewController(QtWidgets.QMainWindow):
         # Variables locales
         self.ruta_imagen = ''
         self.ruta_xml = ''
-
+        self.index = -1
+        self.ruta_imagenes = 'empty'
         self.ui.bttn_selectimg.clicked.connect(
             lambda: self.abrirDirectorioxml())
 
@@ -43,6 +46,13 @@ class MainViewController(QtWidgets.QMainWindow):
         # self.ui.listView.setFocusPolicy(QtCore.Qt.NoFocus)
 
         self.show()
+        self.initWorkspace()
+
+    def initWorkspace(self):
+        a, b = getConfig()
+        if a != 'empty' and b != -1:
+            if self.messageBoxQuestion('Tienes un ultimo workspace quieres iniciarlo?', 'Aviso'):
+                self.abrirDirectorioxml(a, b)
 
     def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Control:
@@ -155,18 +165,23 @@ class MainViewController(QtWidgets.QMainWindow):
 
         self.uiBox = BoxWidget(rad, self.ruta_xml, index, pix, self.setBoxes)
 
-    def abrirDirectorioxml(self):
+    def abrirDirectorioxml(self, path_init=None, index=None):
+        select_path = None
 
-        path_img = QtWidgets.QFileDialog.getOpenFileName(
-            None, 'Buscar Imagen', '.', 'Image Files (*.jpg *.png)')
+        if path_init == None:
+            path_img = QtWidgets.QFileDialog.getOpenFileName(
+                None, 'Buscar Imagen', '.', 'Image Files (*.jpg *.png)')
+            select_path = path_img[0]
+        else:
+            select_path = path_init
 
-        if path_img[0]:
+        if select_path:
 
-            p = Path(path_img[0])
+            p = Path(select_path)
             # Imagen actual la cual despues se indexara
-            self.ruta_imagen = path_img[0]
+            self.ruta_imagen = select_path
             # Ruta del directorio de las imagenes
-            ruta_imagenes = str(p.parent)
+            self.ruta_imagenes = str(p.parent)
             # Ruta del directorio de los XML
             self.root = str(p.parents[1])
             ruta_xmls = str(p.parents[1]) + '/annotations'
@@ -175,9 +190,10 @@ class MainViewController(QtWidgets.QMainWindow):
                 ruta_xmls = str(p.parents[1]) + '/Annotations'
                 self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
 
-            self.list_img_paths = returnAllfilesbyType(ruta_imagenes, '.jpg')
+            self.list_img_paths = returnAllfilesbyType(
+                self.ruta_imagenes, '.jpg')
             self.list_img_paths.extend(
-                returnAllfilesbyType(ruta_imagenes, '.png'))
+                returnAllfilesbyType(self.ruta_imagenes, '.png'))
 
             if platform.system() == 'Windows':
                 wd_list = []
@@ -196,7 +212,7 @@ class MainViewController(QtWidgets.QMainWindow):
             self.list_xml_paths = os_sorted(self.list_xml_paths)
 
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
-                self.index = self.list_img_paths.index(path_img[0])
+                self.index = self.list_img_paths.index(select_path)
                 name = xml_get_name(self.list_xml_paths[self.index])
                 self.ui.lbl_titulo.setText(
                     "{} --- {} / {}".format(name, self.index + 1, len(self.list_xml_paths)))
@@ -306,3 +322,7 @@ class MainViewController(QtWidgets.QMainWindow):
         if QMessageBox.Ok == ret_val:
             return True
         return False
+
+    def closeEvent(self, event):
+        if self.index != -1:
+            setConfig(self.list_img_paths[self.index], self.index)
