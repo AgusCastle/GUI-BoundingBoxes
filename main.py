@@ -5,7 +5,7 @@ from utils.config import initConfigFile
 
 if __name__ == "__main__":
 
+    initConfigFile()
     app = QtWidgets.QApplication(sys.argv)
     window = MainViewController()
-    initConfigFile()
     sys.exit(app.exec_())
