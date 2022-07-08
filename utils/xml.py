@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+import operator
+
 labels = {'other': -1, 'cloth': 1, 'other': 2, 'none': 3,
           'respirator': 4, 'surgical': 5, 'valve': 6}
 
@@ -89,9 +91,10 @@ def xml_sort(xml_paths, img_paths):
     for idx, path_xml in enumerate(xml_paths):
         tree = ET.parse(path_xml)
         root = tree.getroot()
-        labels_list[int(root.find('object').find('label').text)] = idx
+        labels_list[idx] = int(root.find('object').find('label').text)
 
-    sort = sorted(labels_list)
+    sort = sorted(labels_list.items(),
+                  key=operator.itemgetter(1), reverse=True)
 
     xml = []
     img = []
