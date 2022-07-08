@@ -80,3 +80,23 @@ def xml_get_faces(xml_path):
     root = tree.getroot()
 
     return root.find('faces').text
+
+
+def xml_sort(xml_paths, img_paths):
+
+    # Las listas llegan ordenadas
+    labels_list = {}
+    for idx, path_xml in enumerate(xml_paths):
+        tree = ET.parse(path_xml)
+        root = tree.getroot()
+        labels_list[int(root.find('object').find('label').text)] = idx
+
+    sort = sorted(labels_list)
+
+    xml = []
+    img = []
+    for i in sort.values():
+        xml.append(xml_paths[i])
+        img.append(img_paths[i])
+
+    return xml, img

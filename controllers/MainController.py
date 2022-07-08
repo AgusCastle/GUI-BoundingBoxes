@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QImage, QIcon, QColor
 from matplotlib.pyplot import get
 from utils.opencv import *
-from utils.xml import xml_annotation, xml_get_name, xml_update_faces
+from utils.xml import xml_annotation, xml_get_name, xml_update_faces, xml_sort
 from utils.files import returnAllfilesbyType, imagenInapropiada, imagenSinObjetos
 from utils.config import setConfig, getConfig
 
@@ -212,6 +212,8 @@ class MainViewController(QtWidgets.QMainWindow):
             self.list_xml_paths = os_sorted(self.list_xml_paths)
 
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
+                self.list_xml_paths, self.list_img_paths = xml_sort(
+                    self.list_xml_paths, self.list_img_paths)
                 self.index = self.list_img_paths.index(select_path)
                 name = xml_get_name(self.list_xml_paths[self.index])
                 self.ui.lbl_titulo.setText(
