@@ -95,7 +95,7 @@ def xml_sort(xml_paths, img_paths):
 
     sort = sorted(labels_list.items(),
                   key=operator.itemgetter(1), reverse=True)
-
+    print(sort)
     xml = []
     img = []
     for i in sort.values():
