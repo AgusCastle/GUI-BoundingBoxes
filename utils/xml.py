@@ -87,19 +87,31 @@ def xml_get_faces(xml_path):
 def xml_sort(xml_paths, img_paths):
 
     # Las listas llegan ordenadas
-    labels_list = {}
+    labels_list = []
     for idx, path_xml in enumerate(xml_paths):
         tree = ET.parse(path_xml)
         root = tree.getroot()
-        labels_list[idx] = int(root.find('object').find('label').text)
+        labels_list.append({idx: int(root.find('object').find('label').text)})
 
-    sort = sorted(labels_list.items(),
-                  key=operator.itemgetter(1), reverse=True)
+    sort = getSorted(labels_list)
     print(sort)
     xml = []
     img = []
-    for i in sort.values():
-        xml.append(xml_paths[i])
-        img.append(img_paths[i])
+    for dic in sort:
+        xml.append(xml_paths[dic.keys()[0]])
+        img.append(img_paths[dic.keys()[0]])
 
     return xml, img
+
+
+def getSorted(array):
+
+    inter = True
+    while inter:
+        inter = False
+        for i in range(len(array) - 1):
+            if array[i].values()[0] > array[i + 1].values()[0]:
+                array[i], array[i + 1] = array[i + 1], array[i]
+                inter = True
+
+    return array
