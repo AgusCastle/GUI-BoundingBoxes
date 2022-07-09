@@ -110,7 +110,7 @@ def getSorted(array):
     while inter:
         inter = False
         for i in range(len(array) - 1):
-            if array[i].values()[0] > array[i + 1].values()[0]:
+            if list(array[i].values())[0] > list(array[i + 1].values())[0]:
                 array[i], array[i + 1] = array[i + 1], array[i]
                 inter = True
 
