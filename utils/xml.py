@@ -98,41 +98,20 @@ def xml_sort(xml_paths, img_paths):
     xml = []
     img = []
     for dic in sort:
-        xml.append(xml_paths[list(dic.keys()[0])])
-        img.append(img_paths[list(dic.keys()[0])])
+        xml.append(xml_paths[list(dic.keys())[0]])
+        img.append(img_paths[list(dic.keys())[0]])
 
     return xml, img
 
 
-def partition(array, low, high):
-
-    pivot = list(array[high].values())[0]
-    i = low - 1
-
-    for j in range(low, high):
-        if list(array[j].values())[0] <= pivot:
-            i = i + 1
-
-            (array[i], array[j]) = (array[j], array[i])
-
-    (array[i + 1], array[high]) = (array[high], array[i + 1])
-
-    return i + 1
-
-
-def quickSort(array, low, high):
-    if low < high:
-
-        pi = partition(array, low, high)
-
-        # recursive call on the left of pivot
-        quickSort(array, low, pi - 1)
-
-        # recursive call on the right of pivot
-        quickSort(array, pi + 1, high)
-
-
 def getSorted(array):
-    size = len(array)
-    quickSort(array, 0, size - 1)
+
+    inter = True
+    while inter:
+        inter = False
+        for i in range(len(array) - 1):
+            if list(array[i].values())[0] > list(array[i + 1].values())[0]:
+                array[i], array[i + 1] = array[i + 1], array[i]
+                inter = True
+
     return array
