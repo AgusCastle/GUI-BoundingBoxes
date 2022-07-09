@@ -94,7 +94,7 @@ def xml_sort(xml_paths, img_paths):
         labels_list.append({idx: int(root.find('object').find('label').text)})
 
     sort = getSorted(labels_list)
-    print(sort)
+    # print(sort)
     xml = []
     img = []
     for dic in sort:
