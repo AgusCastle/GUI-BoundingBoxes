@@ -214,8 +214,12 @@ class MainViewController(QtWidgets.QMainWindow):
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.list_xml_paths, self.list_img_paths = xml_sort(
                     self.list_xml_paths, self.list_img_paths)
-                #self.index = self.list_img_paths.index(select_path)
-                self.index = 0
+
+                if path_init == None:
+                    self.index = 0
+                else:
+                    self.index = self.list_img_paths.index(select_path)
+
                 name = xml_get_name(self.list_xml_paths[self.index])
                 self.ui.lbl_titulo.setText(
                     "{} --- {} / {}".format(name, self.index + 1, len(self.list_xml_paths)))
