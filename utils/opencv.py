@@ -6,8 +6,8 @@ font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 size_font = 1
 grosor = 2
 
-labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
-          4: 'respirator', 5: 'surgical', 6: 'valve'}
+labels = {-1: 'other', 0: 'cloth', -1: 'other', 1: 'unmasked',
+          2: 'respirator', 3: 'surgical', 4: 'valve'}
 
 
 def setBoxesToImage(path, lis={}):
@@ -15,10 +15,21 @@ def setBoxesToImage(path, lis={}):
     image = cv2.imread(path)
     colors = []
     count = 0
+    # Grondtruth
     for box, label in zip(lis['boxes'], lis['labels']):
         color = boundingBoxColor(labels[label])
         colors.append(color)
-        cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
+        cv2.rectangle(image, (box[0], box[1]),
+                      (box[2], box[3]), (0, 255, 0), 2)
+        cv2.putText(image, "GT " + labels[label] + " " + str(count + 1),
+                    (box[0], box[1] - 18), font, size_font, color, grosor)
+        count += 1
+
+    count = 0
+    for box, label in zip(lis['pred_boxes'], lis['pred_labels']):
+        color = boundingBoxColor(labels[label])
+        cv2.rectangle(image, (box[0], box[1]),
+                      (box[2], box[3]), color, 2)
         cv2.putText(image, labels[label] + " " + str(count + 1),
                     (box[0], box[3] + 18), font, size_font, color, grosor)
         count += 1
@@ -50,7 +61,7 @@ def boundingBoxColor(label):
         return (0, 255, 255)  # Color amarillo
     elif label == 'other':
         return (0, 165, 255)  # Color rojo
-    elif label == 'none':
+    elif label == 'unmasked':
         return (0, 0, 255)
     return (0, 0, 0)
 

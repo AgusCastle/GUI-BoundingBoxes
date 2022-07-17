@@ -34,8 +34,8 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_nopor.clicked.connect(lambda: self.moverInapropiado())
         self.ui.listView.doubleClicked.connect(self.onCliked)
 
-        self.ui.bttn_nopor.setEnabled(False)
-        self.ui.bttn_boxes.setEnabled(False)
+        self.ui.bttn_nopor.setVisible(False)
+        self.ui.bttn_boxes.setVisible(False)
         self.ui.bttn_prev.setEnabled(False)
         self.ui.bttn_next.setEnabled(False)
 
@@ -43,10 +43,10 @@ class MainViewController(QtWidgets.QMainWindow):
         self.ui.bttn_next.setFocusPolicy(QtCore.Qt.NoFocus)
         self.ui.bttn_nopor.setFocusPolicy(QtCore.Qt.NoFocus)
         self.ui.bttn_selectimg.setFocusPolicy(QtCore.Qt.NoFocus)
-        # self.ui.listView.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.ui.listView.setEnabled(False)
 
         self.show()
-        self.initWorkspace()
+        # self.initWorkspace()
 
     def initWorkspace(self):
         a, b = getConfig()
@@ -55,44 +55,12 @@ class MainViewController(QtWidgets.QMainWindow):
                 self.abrirDirectorioxml(a, b)
 
     def keyReleaseEvent(self, event):
-        if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Control:
-            index = self.ui.listView.currentRow()
-
-            h, w, imagen_cv = cutImageBox(
-                self.ruta_imagen, self.imgdata['boxes'][index])
-            imagen = QImage(imagen_cv.data.tobytes(), w, h, w *
-                            3, QImage.Format_RGB888).rgbSwapped()
-            pix = QPixmap.fromImage(imagen).scaled(
-                450, 450, QtCore.Qt.KeepAspectRatio)
-
-            rad = 0
-            if self.imgdata['labels'][index] == 5:
-                rad = 1
-            elif self.imgdata['labels'][index] == 6:
-                rad = 2
-            elif self.imgdata['labels'][index] == 1:
-                rad = 3
-            elif self.imgdata['labels'][index] == 4:
-                rad = 4
-            elif self.imgdata['labels'][index] == 0:
-                rad = 5
-            elif self.imgdata['labels'][index] == 3:
-                rad = 6
-
-            self.uiBox = BoxWidget(
-                rad, self.ruta_xml, index, pix, self.setBoxes)
 
         if event.key() == QtCore.Qt.Key.Key_D:
             self.changeImagen('>')
 
         if event.key() == QtCore.Qt.Key.Key_A:
             self.changeImagen('<')
-
-        if event.key() == QtCore.Qt.Key.Key_L:
-            self.moverSinObjetos()
-
-        if event.key() == QtCore.Qt.Key.Key_J:
-            self.moverInapropiado()
 
     def moverInapropiado(self):
 
@@ -121,7 +89,7 @@ class MainViewController(QtWidgets.QMainWindow):
             self.ui.bttn_prev.setEnabled(True)
 
     def changeImagen(self, op):
-        if op == '>' and self.index < len(self.list_img_paths):
+        if op == '>' and self.index < len(self.list_img_paths) - 1:
             self.index += 1
         if op == '<' and self.index > 0:
             self.index -= 1
@@ -147,21 +115,7 @@ class MainViewController(QtWidgets.QMainWindow):
         pix = QPixmap.fromImage(imagen).scaled(
             450, 450, QtCore.Qt.KeepAspectRatio)
 
-        labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
-                  4: 'respirator', 5: 'surgical', 6: 'valve'}
-        rad = 0
-        if self.imgdata['labels'][index] == 5:
-            rad = 1
-        elif self.imgdata['labels'][index] == 6:
-            rad = 2
-        elif self.imgdata['labels'][index] == 1:
-            rad = 3
-        elif self.imgdata['labels'][index] == 4:
-            rad = 4
-        elif self.imgdata['labels'][index] == 0:
-            rad = 5
-        elif self.imgdata['labels'][index] == 3:
-            rad = 6
+        rad = self.imgdata['labels'][index]
 
         self.uiBox = BoxWidget(rad, self.ruta_xml, index, pix, self.setBoxes)
 
@@ -190,6 +144,9 @@ class MainViewController(QtWidgets.QMainWindow):
                 ruta_xmls = str(p.parents[1]) + '/Annotations'
                 self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
 
+            self.prediction_file = str(
+                p.parents[1]) + '/predictions' + '/predictions.json'
+
             self.list_img_paths = returnAllfilesbyType(
                 self.ruta_imagenes, '.jpg')
             self.list_img_paths.extend(
@@ -208,8 +165,10 @@ class MainViewController(QtWidgets.QMainWindow):
 
                 self.list_img_paths = wd_list
 
-            self.list_img_paths = os_sorted(self.list_img_paths)
-            self.list_xml_paths = os_sorted(self.list_xml_paths)
+            # self.list_img_paths = os_sorted(self.list_img_paths)
+            # self.list_xml_paths = os_sorted(self.list_xml_paths)
+            self.list_img_paths.sort()
+            self.list_xml_paths.sort()
 
             if self.validarIntegridad(self.list_xml_paths, self.list_img_paths):
                 self.index = self.list_img_paths.index(select_path)
@@ -271,9 +230,10 @@ class MainViewController(QtWidgets.QMainWindow):
 
     def setBoxes(self):
         self.ui.listView.clear()
-        labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
-                  4: 'respirator', 5: 'surgical', 6: 'valve'}
-        self.imgdata = xml_annotation(self.ruta_xml)
+        labels = {-1: 'other', 0: 'cloth', -1: 'other', 1: 'none',
+                  2: 'respirator', 3: 'surgical', 4: 'valve'}
+        self.imgdata = xml_annotation(
+            self.ruta_xml, self.prediction_file, self.index)
 
         if self.imgdata['faces'] == 0:
             self.ui.lbl_titulo.setStyleSheet(
@@ -308,13 +268,10 @@ class MainViewController(QtWidgets.QMainWindow):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Question)
 
-        # setting message for Message Box
         msg.setText(message)
 
-        # setting Message box window title
         msg.setWindowTitle(title)
 
-        # declaring buttons on Message Box
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
         ret_val = msg.exec_()

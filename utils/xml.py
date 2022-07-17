@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET
+import json
 labels = {'other': -1, 'cloth': 1, 'other': 2, 'none': 3,
           'respirator': 4, 'surgical': 5, 'valve': 6}
 
 
-def xml_annotation(xml_path):
+def xml_annotation(xml_path, json_path, index):
     tree = ET.parse(xml_path)
     root = tree.getroot()
     boxes = list()
@@ -24,7 +25,14 @@ def xml_annotation(xml_path):
         ymax = int(bbox.find('ymax').text) - 1
         boxes.append([xmin, ymin, xmax, ymax])
         labels.append(int(label))
-    return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels, 'faces': faces}
+
+    with open(json_path, 'r') as f:
+        preds = json.load(f)
+
+    pred_boxs = preds[index]['boxes']
+    pred_labels = preds[index]['labels']
+
+    return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels, 'faces': faces, 'pred_boxes': pred_boxs, 'pred_labels': pred_labels}
 
 
 def xml_update(xml_path, index, new_class):
