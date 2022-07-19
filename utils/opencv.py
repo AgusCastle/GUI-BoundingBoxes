@@ -6,8 +6,8 @@ font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 size_font = 1
 grosor = 2
 
-labels = {0: 'other', 1: 'cloth', 2: 'other', 3: 'none',
-          4: 'respirator', 5: 'surgical', 6: 'valve'}
+labels = {0: 'other', 0: 'cloth', 2: 'other', 1: 'none',
+          2: 'respirator', 3: 'surgical', 4: 'valve'}
 
 
 def setBoxesToImage(path, lis={}):
