@@ -19,7 +19,7 @@ def setBoxesToImage(path, lis={}):
         color = boundingBoxColor(labels[label])
         colors.append(color)
         cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
-        cv2.putText(image, labels[label] + " " + str(count + 1),
+        cv2.putText(image, labels[label],
                     (box[0], box[3] + 18), font, size_font, color, grosor)
         count += 1
 
