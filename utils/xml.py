@@ -29,9 +29,18 @@ def xml_annotation(xml_path, json_path, index):
     with open(json_path, 'r') as f:
         preds = json.load(f)
 
-    pred_boxs = preds[index]['boxes']
-    pred_labels = preds[index]['labels']
+    index = -1
+    for i, p in enumerate(preds):
+        if p['id']+'.jpg' == root.find('filename').text:
+            index = i
+            break
 
+    if index != -1:
+        pred_boxs = preds[index]['boxes']
+        pred_labels = preds[index]['labels']
+    else:
+        pred_boxs = []
+        pred_labels = []
     return {'name': root.find('filename').text, 'boxes': boxes, 'labels': labels, 'faces': faces, 'pred_boxes': pred_boxs, 'pred_labels': pred_labels}
 
 

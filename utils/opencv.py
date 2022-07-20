@@ -20,19 +20,19 @@ def setBoxesToImage(path, lis={}):
         color = boundingBoxColor(labels[label])
         colors.append(color)
         cv2.rectangle(image, (box[0], box[1]),
-                      (box[2], box[3]), (0, 255, 0), 2)
+                      (box[2], box[3]), (0, 255, 0), 4)
         cv2.putText(image, labels[label] + " GT",
                     (box[0], box[1] - 18), font, size_font, color, grosor)
         count += 1
 
     count = 0
-    print(lis['pred_boxes'])
     for box, label in zip(lis['pred_boxes'], lis['pred_labels']):
         color = boundingBoxColor(labels[label])
-        cv2.rectangle(image, (int(box[1]), int(box[0])),
-                      (int(box[3]), int(box[2])), color, 2)
+
+        cv2.rectangle(image, (int(box[0]), int(box[1])),
+                      (int(box[0] + box[2]), int(box[1] + box[3])), color, 2)
         cv2.putText(image, labels[label],
-                    (int(box[0]), int(box[3]) + 18), font, size_font, color, grosor)
+                    (int(box[0]), int(box[1] + box[3] + 18)), font, size_font, color, grosor)
         count += 1
 
     cv2.imwrite('./img.jpg', image)
