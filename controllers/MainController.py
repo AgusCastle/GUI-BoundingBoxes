@@ -144,7 +144,8 @@ class MainViewController(QtWidgets.QMainWindow):
                 ruta_xmls = str(p.parents[1]) + '/Annotations'
                 self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
 
-            self.prediction_file = './predictions.json'
+            self.prediction_file = str(
+                p.parents[1]) + '/predictions.json'
 
             self.list_img_paths = returnAllfilesbyType(
                 self.ruta_imagenes, '.jpg')
@@ -163,6 +164,8 @@ class MainViewController(QtWidgets.QMainWindow):
                     wd_list.append(i.replace('\\', '/'))
 
                 self.list_img_paths = wd_list
+
+                self.prediction_file = self.prediction_file.replace('\\', '/')
 
             # self.list_img_paths = os_sorted(self.list_img_paths)
             # self.list_xml_paths = os_sorted(self.list_xml_paths)
