@@ -6,8 +6,8 @@ font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 size_font = 1
 grosor = 2
 
-labels = {0: 'other', 0: 'cloth', 2: 'other', 1: 'none',
-          2: 'respirator', 3: 'surgical', 4: 'valve'}
+labels = {0: 'other', 0: 'cloth', 2: 'other', 1: 'unmasked',
+          2: 'respirator', 3: 'surgical', 4: 'valved'}
 
 
 def setBoxesToImage(path, lis={}):
@@ -42,15 +42,15 @@ def cutImageBox(path, array):
 def boundingBoxColor(label):
     if label == 'surgical':  # Color Cian
         return (255, 255, 0)
-    elif label == 'valve':  # Color Magenta
+    elif label == 'valved':  # Color Magenta
         return (255, 0, 255)
-    elif label == 'cloth':  # Color lima
-        return (0, 255, 0)
-    elif label == 'respirator':
-        return (0, 255, 255)  # Color amarillo
-    elif label == 'other':
-        return (0, 165, 255)  # Color rojo
-    elif label == 'none':
+    elif label == 'cloth':  # Color Naranja
+        return (0, 165, 255)
+    elif label == 'respirator':  # Color azul
+        return (255, 0, 0)
+    elif label == 'other':  # Color Naranja
+        return (0, 165, 255)
+    elif label == 'unmasked':  # Color rojo
         return (0, 0, 255)
     return (0, 0, 0)
 
