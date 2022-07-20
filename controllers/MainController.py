@@ -144,8 +144,7 @@ class MainViewController(QtWidgets.QMainWindow):
                 ruta_xmls = str(p.parents[1]) + '/Annotations'
                 self.list_xml_paths = returnAllfilesbyType(ruta_xmls, '.xml')
 
-            self.prediction_file = str(
-                p.parents[1]) + '/predictions' + '/predictions.json'
+            self.prediction_file = './predictions.json'
 
             self.list_img_paths = returnAllfilesbyType(
                 self.ruta_imagenes, '.jpg')
