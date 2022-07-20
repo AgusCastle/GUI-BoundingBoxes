@@ -7,7 +7,7 @@ size_font = 1
 grosor = 2
 
 labels = {-1: 'other', 0: 'cloth', -1: 'other', 1: 'unmasked',
-          2: 'respirator', 3: 'surgical', 4: 'valve'}
+          2: 'respirator', 3: 'surgical', 4: 'valved'}
 
 
 def setBoxesToImage(path, lis={}):
@@ -21,7 +21,7 @@ def setBoxesToImage(path, lis={}):
         colors.append(color)
         cv2.rectangle(image, (box[0], box[1]),
                       (box[2], box[3]), (0, 255, 0), 2)
-        cv2.putText(image, "GT " + labels[label] + " " + str(count + 1),
+        cv2.putText(image, labels[label] + " GT",
                     (box[0], box[1] - 18), font, size_font, color, grosor)
         count += 1
 
@@ -53,12 +53,12 @@ def cutImageBox(path, array):
 def boundingBoxColor(label):
     if label == 'surgical':  # Color Cian
         return (255, 255, 0)
-    elif label == 'valve':  # Color Magenta
+    elif label == 'valved':  # Color Magenta
         return (255, 0, 255)
     elif label == 'cloth':  # Color lima
-        return (0, 255, 0)
+        return (255, 0, 0)
     elif label == 'respirator':
-        return (0, 255, 255)  # Color amarillo
+        return (0, 165, 255)  # Color amarillo
     elif label == 'other':
         return (0, 165, 255)  # Color rojo
     elif label == 'unmasked':
