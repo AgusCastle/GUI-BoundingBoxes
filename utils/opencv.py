@@ -47,11 +47,11 @@ def boundingBoxColor(label):
     elif label == 'cloth':  # Color Naranja
         return (0, 165, 255)
     elif label == 'respirator':  # Color azul
-        return (255, 0, 0)
+        return (0, 0, 255)
     elif label == 'other':  # Color Naranja
         return (0, 165, 255)
     elif label == 'unmasked':  # Color rojo
-        return (0, 0, 255)
+        return (255, 0, 0)
     return (0, 0, 0)
 
 
