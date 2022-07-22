@@ -52,18 +52,18 @@ def cutImageBox(path, array):
 
 
 def boundingBoxColor(label):
-    if label == 'surgical':  # Color Cian
-        return (255, 255, 0)
-    elif label == 'valved':  # Color Magenta
-        return (255, 0, 255)
-    elif label == 'cloth':  # Color lima
-        return (0, 165, 255)
+    if label == 'surgical':  
+        return (255, 255, 0) #Color Cian
+    elif label == 'valved':  
+        return (255, 0, 255) #Color Magenta
+    elif label == 'cloth':  
+        return (0, 165, 255) #Color lima
     elif label == 'respirator':
-        return (255, 0, 0)  # Color amarillo
+        return (0, 0, 255) #Color amarillo
     elif label == 'other':
-        return (0, 165, 255)  # Color rojo
+        return (0, 165, 255)  #Color rojo
     elif label == 'unmasked':
-        return (0, 0, 255)
+        return (255, 0, 0) 
     return (0, 0, 0)
 
 
