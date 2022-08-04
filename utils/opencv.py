@@ -14,16 +14,16 @@ def setBoxesToImage(path, lis={}):
 
     image = cv2.imread(path)
     colors = []
-    count = 0
+    # count = 0
     # Grondtruth
-    for box, label in zip(lis['boxes'], lis['labels']):
-        color = boundingBoxColor(labels[label])
-        colors.append(color)
-        cv2.rectangle(image, (box[0], box[1]),
-                      (box[2], box[3]), (0, 255, 0), 4)
-        cv2.putText(image, labels[label] + " GT",
-                    (box[0], box[1] - 18), font, size_font, color, grosor)
-        count += 1
+    # for box, label in zip(lis['boxes'], lis['labels']):
+    #     color = boundingBoxColor(labels[label])
+    #     colors.append(color)
+    #     cv2.rectangle(image, (box[0], box[1]),
+    #                   (box[2], box[3]), (0, 255, 0), 4)
+    #     cv2.putText(image, labels[label] + " GT",
+    #                 (box[0], box[1] - 18), font, size_font, color, grosor)
+    #     count += 1
 
     count = 0
     for box, label in zip(lis['pred_boxes'], lis['pred_labels']):
